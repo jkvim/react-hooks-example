@@ -6588,6 +6588,10 @@ react-error-overlay@^5.0.5:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.0.5.tgz#716ff1a92fda76bb89a39adf9ce046a5d740e71a"
 
+react-hanger@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/react-hanger/-/react-hanger-1.0.7.tgz#e2b0f5e183a79a5e90c28f96a071713200b58ee4"
+
 react-scripts@2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/react-scripts/-/react-scripts-2.0.5.tgz#74b8e9fa6a7c5f0f11221dd18c10df2ae3df3d69"

@@ -5,6 +5,7 @@
   "dependencies": {
     "react": "^16.7.0-alpha.0",
     "react-dom": "^16.7.0-alpha.0",
+    "react-hanger": "^1.0.7",
     "react-scripts": "2.0.5"
   },
   "scripts": {
