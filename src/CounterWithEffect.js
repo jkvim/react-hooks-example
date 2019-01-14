@@ -1,7 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Counter() {
   const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    document.title = `Yout click ${count} times`
+    console.log('subscribe', count)
+
+    return () => {
+      console.log(`unsubscribe ${count}`)
+    }
+  })
 
   return (
     <div>
