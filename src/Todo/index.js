@@ -19,7 +19,7 @@ function todoReducer(state, action) {
   }
 }
 
-const TodoItem = memo(({ todo, toggle: onToggle, onDelete }) => {
+const TodoItem = memo(({ todo, onToggle, onDelete }) => {
   console.log("render item");
 
   return (
@@ -40,17 +40,17 @@ function TodoList() {
   const [newTodo, updateTodo] = useState("");
   const [todoList, dispatch] = useReducer(todoReducer, []);
 
-  const handleAdd = () => {
+  const handleAdd = useCallback(() => {
     dispatch({ type: "ADD", value: newTodo });
-  };
+  });
 
-  const handleDelete = id => {
+  const handleDelete = useCallback(id => {
     dispatch({ type: "REMOVE", id });
-  };
+  }, []);
 
-  const toggleTodo = id => {
+  const toggleTodo = useCallback(id => {
     dispatch({ type: "TOGGLE", id });
-  };
+  }, []);
 
   const handleInputChange = e => {
     updateTodo(e.target.value);
