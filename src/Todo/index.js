@@ -1,5 +1,14 @@
-import React, { useState, useReducer, memo, useCallback } from "react";
+import React, {
+  useState,
+  useReducer,
+  memo,
+  useCallback,
+  useContext,
+  useMemo
+} from "react";
+
 import "./Todo.css";
+import TodoContext from "./TodoContext";
 
 function todoReducer(state, action) {
   switch (action.type) {
@@ -13,25 +22,26 @@ function todoReducer(state, action) {
         todo.id === action.id ? { ...todo, complete: !todo.complete } : todo
       );
     case "REMOVE":
-      return state.filter(todo => todo !== action.value);
+      return state.filter(todo => todo.id !== action.id);
     default:
       return state;
   }
 }
 
-const TodoItem = memo(({ todo, onToggle, onDelete }) => {
+const TodoItem = memo(({ todo }) => {
   console.log("render item");
+  const { dispatch } = useContext(TodoContext)
 
   return (
     <li>
       <p
         className="todo"
         style={{ textDecoration: todo.complete ? "line-through" : "none" }}
-        onClick={() => onToggle(todo.id)}
+        onClick={() => dispatch({ type: 'TOGGLE', id: todo.id })}
       >
         {todo.value}
       </p>
-      <button onClick={() => onDelete(todo.id)}>&times;</button>
+      <button onClick={() => dispatch({ type: 'REMOVE', id: todo.id })}>&times;</button>
     </li>
   );
 });
@@ -39,38 +49,28 @@ const TodoItem = memo(({ todo, onToggle, onDelete }) => {
 function TodoList() {
   const [newTodo, updateTodo] = useState("");
   const [todoList, dispatch] = useReducer(todoReducer, []);
+  const todoContext = useMemo(() => ({ dispatch }), [])
 
   const handleAdd = useCallback(() => {
     dispatch({ type: "ADD", value: newTodo });
   });
-
-  const handleDelete = useCallback(id => {
-    dispatch({ type: "REMOVE", id });
-  }, []);
-
-  const toggleTodo = useCallback(id => {
-    dispatch({ type: "TOGGLE", id });
-  }, []);
 
   const handleInputChange = e => {
     updateTodo(e.target.value);
   };
 
   return (
-    <div>
-      <input value={newTodo} onChange={handleInputChange} />
-      <button onClick={handleAdd}>add</button>
-      <ul>
-        {todoList.map((todo, index) => (
-          <TodoItem
-            key={index}
-            todo={todo}
-            onToggle={toggleTodo}
-            onDelete={handleDelete}
-          />
-        ))}
-      </ul>
-    </div>
+    <TodoContext.Provider value={todoContext}>
+      <div>
+        <input value={newTodo} onChange={handleInputChange} />
+        <button onClick={handleAdd}>add</button>
+        <ul>
+          {todoList.map((todo, index) => (
+            <TodoItem key={index} todo={todo} />
+          ))}
+        </ul>
+      </div>
+    </TodoContext.Provider>
   );
 }
 
